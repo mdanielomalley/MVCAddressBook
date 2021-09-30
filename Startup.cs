@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVCAddressBook.Data;
+using MVCAddressBook.Services;
+using MVCAddressBook.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +21,7 @@ namespace MVCAddressBook
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -27,6 +29,8 @@ namespace MVCAddressBook
         {
             services.AddDbContext<ApplicationDbContext>
                 (options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IImageService, BasicImageService>();
 
             services.AddControllersWithViews();
         }
